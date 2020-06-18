@@ -1,0 +1,60 @@
+{
+  "name": "create-react-app-typescript-todo-example-2020",
+  "proxy": "https://damp-falls-34374.herokuapp.com",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .ts,.tsx,.js",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js --fix",
+    "prettier": "prettier --write {src,cypress}/**/*.{js,ts,tsx}",
+    "typecheck": "tsc --noEmit",
+    "cypress:run": "cypress run",
+    "cypress:run:chrome": "cypress run --browser chrome",
+    "cypress:run:chrome:headless": "cypress run --browser chrome --headless",
+    "cypress:open": "cypress open",
+    "cypress:run:percy": "percy exec -- cypress run --record",
+    "ci:start_server_and_percy": "percy exec -- yarn start",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "@laststance/use-app-state": "^1.2.6",
+    "@reach/router": "^1.3.3",
+    "@types/reach__router": "^1.3.5",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "16.9.8",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@percy/cypress": "^2.3.1",
+    "@testing-library/jest-dom": "^5.9.0",
+    "@testing-library/react": "^10.2.1",
+    "@types/jest": "^25.2.3",
+    "@types/node": "^14.0.11",
+    "all-contributors-cli": "^6.15.0",
+    "cypress": "^4.7.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-typescript": "^3.0.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^2.0.5",
+    "react-scripts": "3.4.0",
+    "typescript": "^3.9.5"
+  }
+}
