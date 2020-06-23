@@ -21,7 +21,7 @@ export type TodoListType = Todo[]
 export interface AppState {
   todoList: Todo[]
 }
-export const getTodoListUrl = 'https://damp-falls-34374.herokuapp.com/todos'
+export const getTodoListUrl = process.env.REACT_APP_URL || 'localhost:3000'
 
 function reactRender(data: AppState | TodoListType) {
   ReactDOM.render(
