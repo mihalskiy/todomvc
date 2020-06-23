@@ -9,13 +9,7 @@ interface Props {
 }
 
 const TodoList: React.FC<Props> = ({ path }) => {
-  const [appState, setAppState] = useAppState<AppState>()
-
-  function toggleAllCheckbox(e: React.ChangeEvent<HTMLInputElement>): void {
-    setAppState({
-      todoList: {"todoList":[{"id":"Q5BOuGrfiI3w","bodyText":"mwfw,","isComplete":false},{"id":"tUxiVD4X3iZ9","bodyText":"fdg","isComplete":true}]},
-    })
-  }
+  const [appState] = useAppState<AppState>()
 
   return (
     <Container>
@@ -24,7 +18,6 @@ const TodoList: React.FC<Props> = ({ path }) => {
           id="toggle-all"
           className="toggle-all"
           type="checkbox"
-          onChange={toggleAllCheckbox}
           data-cy="toggle-all-btn"
           data-testid="toggle-all-btn"
         />
