@@ -1,0 +1,3 @@
+name: todo-mvc
+runtime: nodejs
+description: A minimal AWS JavaScript Pulumi program for deploy on S3 service
