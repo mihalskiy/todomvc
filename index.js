@@ -1,11 +1,9 @@
 import * as pulumi from '@pulumi/pulumi'
 import * as aws from '@pulumi/aws'
 
-const todoBucket = new aws.s3.Bucket('todo-bucket', {
-  acl: 'private',
-})
-const todoRole = new aws.iam.Role('todo-role', {
-  assumeRolePolicy: `{
+aws.s3.getBucket({ bucket: 'todo.test' }).then((todoBucket) => {
+  const todoRole = new aws.iam.Role('todo-role', {
+    assumeRolePolicy: `{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -18,9 +16,9 @@ const todoRole = new aws.iam.Role('todo-role', {
   ]
 }
 `,
-})
-const todoRolePolicy = new aws.iam.RolePolicy('todo-rolePolicy', {
-  policy: pulumi.interpolate`{
+  })
+  const todoRolePolicy = new aws.iam.RolePolicy('todo-rolePolicy', {
+    policy: pulumi.interpolate`{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -74,118 +72,117 @@ const todoRolePolicy = new aws.iam.RolePolicy('todo-rolePolicy', {
   ]
 }
 `,
-  role: todoRole.name,
-})
+    role: todoRole.name,
+  })
 
-const todoProject = new aws.codebuild.Project('todo', {
-  artifacts: {
-    type: 'NO_ARTIFACTS',
-  },
-  buildTimeout: 5,
-  cache: {
-    location: todoBucket.bucket,
-    type: 'S3',
-  },
-  description: 'test_codebuild_project',
-  environment: {
-    computeType: 'BUILD_GENERAL1_SMALL',
-    environmentVariables: [
-      {
-        name: 'SOME_KEY1',
-        value: 'SOME_VALUE1',
-      },
-      {
-        name: 'SOME_KEY2',
-        type: 'PARAMETER_STORE',
-        value: 'SOME_VALUE2',
-      },
-    ],
-    image: 'aws/codebuild/standard:1.0',
-    imagePullCredentialsType: 'CODEBUILD',
-    type: 'LINUX_CONTAINER',
-  },
-  logsConfig: {
-    cloudwatchLogs: {
-      groupName: 'log-group',
-      streamName: 'log-stream',
+  const todoProject = new aws.codebuild.Project('todo', {
+    artifacts: {
+      type: 'NO_ARTIFACTS',
     },
-    s3Logs: {
-      location: pulumi.interpolate`${todoBucket.id}/build-log`,
-      status: 'ENABLED',
+    buildTimeout: 5,
+    cache: {
+      location: todoBucket.bucket,
+      type: 'S3',
     },
-  },
-  serviceRole: todoRole.arn,
-  source: {
-    gitCloneDepth: 1,
-    gitSubmodulesConfig: {
-      fetchSubmodules: true,
-    },
-    location: 'https://github.com/mihalskiy/todomvc.git',
-    type: 'GITHUB',
-  },
-  sourceVersion: 'master',
-  tags: {
-    Environment: 'Todo',
-  },
-  // vpcConfig: {
-  //   securityGroupIds: [
-  //     aws_security_group_example1.id,
-  //     aws_security_group_example2.id,
-  //   ],
-  //   subnets: [aws_subnet_example1.id, aws_subnet_example2.id],
-  //   vpcId: aws_vpc_example.id,
-  // },
-})
-const todo_with_cache = new aws.codebuild.Project('todo-with-cache', {
-  artifacts: {
-    type: 'NO_ARTIFACTS',
-  },
-  BuildSpec: {
-
-  },
-  buildTimeout: 5,
-  cache: {
-    modes: ['LOCAL_DOCKER_LAYER_CACHE', 'LOCAL_SOURCE_CACHE'],
-    type: 'LOCAL',
-  },
-  description: 'test_codebuild_project_cache',
-  environment: {
-    computeType: 'BUILD_GENERAL1_SMALL',
-    environmentVariables: [
-      {
-        name: 'SOME_KEY1',
-        value: 'SOME_VALUE1',
-      },
-    ],
-    image: 'aws/codebuild/standard:1.0',
-    imagePullCredentialsType: 'CODEBUILD',
-    type: 'LINUX_CONTAINER',
-  },
-  queuedTimeout: 5,
-  serviceRole: todoRole.arn,
-  source: {
-    gitCloneDepth: 1,
-    location: 'https://github.com/mihalskiy/todomvc.git',
-    type: 'GITHUB',
-  },
-  tags: {
-    Environment: 'Test',
-  },
-})
-const todoWebhook = new aws.codebuild.Webhook('todo-webhook', {
-  filterGroups: [
-    {
-      filters: [
+    description: 'test_codebuild_project',
+    environment: {
+      computeType: 'BUILD_GENERAL1_SMALL',
+      environmentVariables: [
         {
-          pattern: 'PUSH',
-          type: 'EVENT',
+          name: 'SOME_KEY1',
+          value: 'SOME_VALUE1',
         },
         {
-          pattern: 'master',
-          type: 'HEAD_REF',
+          name: 'SOME_KEY2',
+          type: 'PARAMETER_STORE',
+          value: 'SOME_VALUE2',
         },
       ],
+      image: 'aws/codebuild/standard:1.0',
+      imagePullCredentialsType: 'CODEBUILD',
+      type: 'LINUX_CONTAINER',
     },
-  ],
-  projectName: todo_with_cache.name,
+    logsConfig: {
+      cloudwatchLogs: {
+        groupName: 'log-group',
+        streamName: 'log-stream',
+      },
+      s3Logs: {
+        location: pulumi.interpolate`${todoBucket.id}/build-log`,
+        status: 'ENABLED',
+      },
+    },
+    serviceRole: todoRole.arn,
+    source: {
+      gitCloneDepth: 1,
+      gitSubmodulesConfig: {
+        fetchSubmodules: true,
+      },
+      location: 'https://github.com/mihalskiy/todomvc.git',
+      type: 'GITHUB',
+    },
+    sourceVersion: 'master',
+    tags: {
+      Environment: 'Todo',
+    },
+    // vpcConfig: {
+    //   securityGroupIds: [
+    //     aws_security_group_example1.id,
+    //     aws_security_group_example2.id,
+    //   ],
+    //   subnets: [aws_subnet_example1.id, aws_subnet_example2.id],
+    //   vpcId: aws_vpc_example.id,
+    // },
+  })
+  const todo_with_cache = new aws.codebuild.Project('todo-with-cache', {
+    artifacts: {
+      type: 'NO_ARTIFACTS',
+    },
+    BuildSpec: {},
+    buildTimeout: 5,
+    cache: {
+      modes: ['LOCAL_DOCKER_LAYER_CACHE', 'LOCAL_SOURCE_CACHE'],
+      type: 'LOCAL',
+    },
+    description: 'test_codebuild_project_cache',
+    environment: {
+      computeType: 'BUILD_GENERAL1_SMALL',
+      environmentVariables: [
+        {
+          name: 'SOME_KEY1',
+          value: 'SOME_VALUE1',
+        },
+      ],
+      image: 'aws/codebuild/standard:1.0',
+      imagePullCredentialsType: 'CODEBUILD',
+      type: 'LINUX_CONTAINER',
+    },
+    queuedTimeout: 5,
+    serviceRole: todoRole.arn,
+    source: {
+      gitCloneDepth: 1,
+      location: 'https://github.com/mihalskiy/todomvc.git',
+      type: 'GITHUB',
+    },
+    tags: {
+      Environment: 'Test',
+    },
+  })
+  const todoWebhook = new aws.codebuild.Webhook('todo-webhook', {
+    filterGroups: [
+      {
+        filters: [
+          {
+            pattern: 'PUSH',
+            type: 'EVENT',
+          },
+          {
+            pattern: 'master',
+            type: 'HEAD_REF',
+          },
+        ],
+      },
+    ],
+    projectName: todo_with_cache.name,
+  })
 })
