@@ -87,17 +87,6 @@ aws.s3.getBucket({ bucket: 'todo.test' }).then((todoBucket) => {
     description: 'test_codebuild_project',
     environment: {
       computeType: 'BUILD_GENERAL1_SMALL',
-      environmentVariables: [
-        {
-          name: 'SOME_KEY1',
-          value: 'SOME_VALUE1',
-        },
-        {
-          name: 'SOME_KEY2',
-          type: 'PARAMETER_STORE',
-          value: 'SOME_VALUE2',
-        },
-      ],
       image: 'aws/codebuild/standard:1.0',
       imagePullCredentialsType: 'CODEBUILD',
       type: 'LINUX_CONTAINER',
@@ -147,12 +136,6 @@ aws.s3.getBucket({ bucket: 'todo.test' }).then((todoBucket) => {
     description: 'test_codebuild_project_cache',
     environment: {
       computeType: 'BUILD_GENERAL1_SMALL',
-      environmentVariables: [
-        {
-          name: 'SOME_KEY1',
-          value: 'SOME_VALUE1',
-        },
-      ],
       image: 'aws/codebuild/standard:1.0',
       imagePullCredentialsType: 'CODEBUILD',
       type: 'LINUX_CONTAINER',
