@@ -32,6 +32,7 @@ const Sign: React.FC = () => {
         setAppState({
           todoList,
           loading: false,
+          idToken: token,
         })
         redirectTo('/todo')
       })
