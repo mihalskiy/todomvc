@@ -17,10 +17,11 @@ const Sign: React.FC = () => {
     setAppState(change)
   }
   const onSubmit = (e: any): void => {
+    if (!appState.email && !appState.password) return
+    e.preventDefault()
     setAppState({
       loading: true,
     })
-    e.preventDefault()
     Auth.signIn(appState.email, appState.password)
       .then(async (response: any) => {
         setAppState({
