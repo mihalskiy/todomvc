@@ -3,4 +3,4 @@ version: 0.2
 phases:
   build:
     commands:
-      - npm i && npm run build && npm run deploy
+      - yarn install && yarn build && yarn deploy
