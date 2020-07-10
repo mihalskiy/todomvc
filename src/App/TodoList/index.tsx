@@ -26,7 +26,7 @@ const TodoList: React.FC<Props> = ({ path }) => {
           {appState.todoList
             .filter((t: Todo): boolean => {
               switch (path) {
-                case '/':
+                case '/todo':
                   return true
                 case '/active':
                   return !t.isComplete
@@ -42,6 +42,9 @@ const TodoList: React.FC<Props> = ({ path }) => {
               }
             )}
         </ul>
+        {!appState.todoList &&
+          <span>loading...</span>
+        }
       </section>
     </Container>
   )

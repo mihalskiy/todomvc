@@ -12,6 +12,30 @@ export const Container = styled.div`
     position: relative;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   }
+  
+  .title {
+    text: center;
+  }
+  
+  .logout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-end;
+    margin-top: 15px;
+    
+    button {
+      border 1px solid #ccc;
+      padding: 10px 16px;
+      background: #ccc;
+      color: #fff;
+      cursor: pointer;
+      
+      :hover {
+        background: grey;
+      }
+    }
+  }
 
   .todoapp input::-webkit-input-placeholder {
     font-style: italic;

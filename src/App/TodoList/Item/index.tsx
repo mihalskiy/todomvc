@@ -38,6 +38,7 @@ const Item: React.FC<Props> = ({ todo }) => {
         fetch(getTodoListUrl + `/${id}`, {
           method: 'PUT',
           headers: {
+            Authorization: appState.idToken,
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
@@ -78,8 +79,9 @@ const Item: React.FC<Props> = ({ todo }) => {
         fetch(getTodoListUrl + `/${t.id}`, {
           method: 'PUT',
           headers: {
-            Accept: 'application/json',
+            Authorization: appState.idToken,
             'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
           body: JSON.stringify(updateTodoById),
         }).catch(() => {

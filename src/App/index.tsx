@@ -5,8 +5,9 @@ import TodoList from './TodoList'
 import Menu from './Menu'
 import Copyright from './Copyright'
 import { Routes, AppState } from '../index'
-import { RouteComponentProps } from '@reach/router'
+import { navigate, RouteComponentProps } from '@reach/router'
 import { Container } from './style'
+import { Auth } from 'aws-amplify'
 
 export enum LocalStorageKey {
   APP_STATE = 'APP_STATE',
@@ -27,8 +28,16 @@ const App: React.FC<Props & RouteComponentProps> = ({ path }) => {
     )
   }, [appState])
 
+  const logout = async () => {
+    await Auth.signOut()
+    navigate('/sign_in')
+  }
+
   return (
     <Container>
+      <div className="logout">
+        <button onClick={logout}>LOGOUT</button>
+      </div>
       <section className="todoapp">
         <TodoTextInput />
         {appState.todoList.length ? (

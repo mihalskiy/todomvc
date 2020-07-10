@@ -19,20 +19,21 @@ const TodoTextInput: React.FC = () => {
 
         fetch(getTodoListUrl, {
           method: 'POST',
+          mode: 'cors',
+          redirect: 'follow',
           headers: {
-            Accept: 'application/json',
+            Authorization: appState.idToken,
             'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
           body: JSON.stringify(todo),
         })
-          .then((r) => {
-            return r.json()
-          })
+          .then((r) => r.json())
           .then((todo: Todo) => {
             setAppState({ todoList: [todo, ...appState.todoList] })
           })
-          .catch(() => {
-            return
+          .catch((e) => {
+            return e
           })
 
         textInput.current.value = ''
@@ -43,7 +44,7 @@ const TodoTextInput: React.FC = () => {
   return (
     <Container>
       <header className="header">
-        <h1>todos</h1>
+        <h1>TODO</h1>
         <input
           type="text"
           className="new-todo"
