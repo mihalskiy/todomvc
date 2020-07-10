@@ -17,8 +17,8 @@ const SignUp: React.FC = () => {
   }
 
   const onSubmit = (e: any): void => {
-    if (!appState.email && !appState.password) return
     e.preventDefault()
+    if (!appState.email && !appState.password) return
     setAppState({
       loading: true,
     })
